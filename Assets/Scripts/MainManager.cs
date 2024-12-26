@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,13 +13,25 @@ public class MainManager : MonoBehaviour
     
     private bool m_Started = false;
     private int m_Points;
+    private string playerName;
     
     private bool m_GameOver = false;
 
-    
-    // Start is called before the first frame update
     void Start()
     {
+        // Get player name from GameManager
+        if (GameManager.Instance != null)
+        {
+            playerName = GameManager.Instance.playerName;
+        }
+        else
+        {
+            playerName = "Player"; // Default name if none is set
+        }
+        
+        // Initialize score text with player name
+        ScoreText.text = $"Score - {playerName} : {m_Points}";
+        
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -65,7 +75,7 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Score - {playerName} : {m_Points}";
     }
 
     public void GameOver()
